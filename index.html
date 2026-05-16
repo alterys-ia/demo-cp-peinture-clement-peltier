@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CP Peinture — Maquette Altérys IA</title>
+  <meta name="description" content="Maquette de démonstration non officielle pour CP Peinture — Mr Peltier Clément, artisan peintre à Sainte-Marie-aux-Chênes." />
+  <style>
+    :root{
+      --ink:#181a1b;
+      --graphite:#262a2c;
+      --cream:#f3eadc;
+      --paper:#fffaf1;
+      --clay:#a96342;
+      --green:#78836f;
+      --blue:#516f7b;
+      --line:rgba(24,26,27,.14);
+      --muted:#716c64;
+      --shadow:0 28px 80px rgba(24,26,27,.16);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:var(--cream);
+      color:var(--ink);
+      line-height:1.55;
+      overflow-x:hidden;
+    }
+    a{text-decoration:none;color:inherit}
+    .wrap{width:min(1160px,calc(100% - 40px));margin:auto}
+    .layout{display:grid;grid-template-columns:84px 1fr;min-height:100vh}
+    .rail{
+      position:sticky;top:0;height:100vh;background:var(--ink);color:white;
+      display:flex;flex-direction:column;align-items:center;justify-content:space-between;
+      padding:22px 12px;z-index:50;
+    }
+    .rail .logo{
+      width:52px;height:52px;border-radius:50%;
+      background:linear-gradient(135deg,var(--clay),#d9b083);
+      display:grid;place-items:center;font-weight:950;letter-spacing:-.04em;
+      box-shadow:0 14px 32px rgba(169,99,66,.35);
+    }
+    .rail nav{display:flex;flex-direction:column;gap:18px;align-items:center}
+    .rail nav a{
+      writing-mode:vertical-rl;transform:rotate(180deg);
+      font-size:.73rem;text-transform:uppercase;letter-spacing:.16em;color:rgba(255,255,255,.58);
+    }
+    .rail nav a:hover{color:white}
+    .rail .call{
+      width:52px;height:52px;border-radius:50%;background:white;color:var(--ink);
+      display:grid;place-items:center;font-weight:900;
+    }
+    main{min-width:0}
+    .top-note{
+      background:var(--paper);border-bottom:1px solid var(--line);padding:12px 0;
+      font-size:.88rem;color:var(--muted);
+    }
+    .top-note .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+    .hero{min-height:92vh;display:grid;align-items:center;position:relative;padding:70px 0;overflow:hidden}
+    .hero:before{
+      content:"";position:absolute;right:-10vw;top:10vh;width:56vw;height:56vw;border-radius:50%;
+      background:radial-gradient(circle,rgba(169,99,66,.18),rgba(120,131,111,.12),transparent 65%);
+      pointer-events:none;
+    }
+    .hero-grid{position:relative;display:grid;grid-template-columns:1fr 390px;gap:50px;align-items:center}
+    .kicker{font-size:.78rem;text-transform:uppercase;letter-spacing:.18em;color:var(--clay);font-weight:950;margin-bottom:18px}
+    h1{
+      font-size:clamp(3.2rem,8vw,7.6rem);
+      line-height:.84;letter-spacing:-.075em;margin-bottom:28px;max-width:780px;
+    }
+    .lead{font-size:1.18rem;color:#4f4a43;max-width:680px;margin-bottom:34px}
+    .cta-row{display:flex;flex-wrap:wrap;gap:12px}
+    .btn{
+      min-height:48px;border-radius:999px;padding:14px 20px;display:inline-flex;align-items:center;justify-content:center;
+      border:1px solid transparent;font-weight:900;transition:.22s;
+    }
+    .btn:hover{transform:translateY(-2px)}
+    .btn-primary{background:var(--clay);color:white;box-shadow:0 16px 34px rgba(169,99,66,.24)}
+    .btn-dark{background:var(--ink);color:white}
+    .btn-line{border-color:var(--line);background:rgba(255,255,255,.5)}
+    .profile-card{
+      background:var(--ink);color:white;border-radius:34px;padding:30px;box-shadow:var(--shadow);
+      display:grid;gap:20px;transform:rotate(1deg);
+    }
+    .profile-card h2{font-size:2.1rem;line-height:1;letter-spacing:-.04em}
+    .score{
+      display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px;
+    }
+    .score div{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:22px;padding:16px}
+    .score b{display:block;font-size:1.6rem}.score span{color:rgba(255,255,255,.68);font-size:.86rem}
+    .contact-mini{display:grid;gap:10px}
+    .contact-mini a,.contact-mini p{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:14px;color:rgba(255,255,255,.82)}
+    section{padding:92px 0}
+    .section-title{display:grid;grid-template-columns:.75fr 1.25fr;gap:38px;align-items:end;margin-bottom:44px}
+    .section-title h2{font-size:clamp(2.2rem,4.5vw,4.1rem);line-height:.95;letter-spacing:-.055em}
+    .section-title p{font-size:1.05rem;color:var(--muted)}
+    .surface-board{
+      display:grid;grid-template-columns:1.1fr .9fr;gap:18px;align-items:stretch;
+    }
+    .surface-big{
+      min-height:520px;border-radius:40px;padding:36px;background:
+      linear-gradient(135deg,rgba(24,26,27,.25),rgba(24,26,27,.05)),
+      repeating-linear-gradient(90deg,#ded0bd 0 18px,#eadfce 18px 36px);
+      position:relative;overflow:hidden;box-shadow:var(--shadow);
+    }
+    .surface-big:after{
+      content:"";position:absolute;width:280px;height:280px;border-radius:50%;right:-70px;bottom:-70px;
+      background:rgba(169,99,66,.2);
+    }
+    .surface-big h3{font-size:clamp(2rem,4vw,3.5rem);line-height:.95;letter-spacing:-.045em;max-width:520px}
+    .surface-list{display:grid;gap:18px}
+    .surface-item{
+      background:var(--paper);border:1px solid var(--line);border-radius:28px;padding:26px;
+      display:grid;grid-template-columns:54px 1fr;gap:18px;align-items:start;
+    }
+    .surface-item b{width:54px;height:54px;border-radius:18px;background:var(--ink);color:white;display:grid;place-items:center}
+    .surface-item p{color:var(--muted)}
+    .paper{background:var(--paper)}
+    .diagnostic{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+    .diag{
+      background:var(--cream);border:1px solid var(--line);border-radius:28px;padding:26px;min-height:250px;
+    }
+    .diag .num{display:block;color:var(--clay);font-weight:950;margin-bottom:24px}
+    .diag h3{font-size:1.32rem;line-height:1.1;margin-bottom:12px}
+    .diag p{color:var(--muted)}
+    .service-strip{display:grid;gap:12px}
+    .service-line{
+      display:grid;grid-template-columns:170px 1fr 210px;gap:20px;align-items:center;
+      border-top:1px solid var(--line);padding:24px 0;
+    }
+    .service-line:last-child{border-bottom:1px solid var(--line)}
+    .service-line b{font-size:1.8rem;letter-spacing:-.04em}
+    .service-line p{color:var(--muted)}
+    .service-line span{justify-self:end;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:10px 14px;font-weight:850;color:var(--clay)}
+    .dark{background:var(--ink);color:white}
+    .dark .section-title p{color:rgba(255,255,255,.68)}
+    .method{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.12);border-radius:32px;overflow:hidden}
+    .method article{background:#202324;padding:30px;min-height:260px}
+    .method b{color:#ffd2bc}.method h3{font-size:1.35rem;margin:28px 0 12px}.method p{color:rgba(255,255,255,.68)}
+    .proof-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
+    .review{
+      background:var(--ink);color:white;border-radius:30px;padding:28px;min-height:250px;
+      display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;
+    }
+    .review:before{content:"“";position:absolute;right:20px;top:-54px;font:10rem Georgia,serif;color:rgba(255,255,255,.07)}
+    .review p{position:relative;color:rgba(255,255,255,.84)}.review strong{position:relative;color:white}
+    .zone-contact{display:grid;grid-template-columns:.9fr 1.1fr;gap:40px}
+    .cities{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+    .cities span{background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:10px 13px;font-weight:850}
+    .form-card{background:var(--ink);color:white;border-radius:38px;padding:34px;box-shadow:var(--shadow)}
+    .form-card p{color:rgba(255,255,255,.68);margin:12px 0 24px}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .field{display:grid;gap:7px}.full{grid-column:1/-1}
+    label{font-size:.86rem;font-weight:850}
+    input,select,textarea{width:100%;border:1px solid rgba(255,255,255,.16);border-radius:16px;padding:14px 15px;background:rgba(255,255,255,.08);color:white;font:inherit;outline:none}
+    input::placeholder,textarea::placeholder{color:rgba(255,255,255,.45)}
+    textarea{min-height:120px;resize:vertical}
+    footer{background:#101112;color:white;padding:42px 0;margin-left:0}
+    footer p,footer a,footer span{color:rgba(255,255,255,.68)}
+    .footer-grid{display:grid;grid-template-columns:1.1fr .9fr .9fr;gap:24px}
+    .footer-bottom{border-top:1px solid rgba(255,255,255,.1);margin-top:28px;padding-top:18px;display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;font-size:.88rem}
+    .alterys{color:rgba(255,255,255,.45)}
+    @media(max-width:980px){
+      .layout{grid-template-columns:1fr}.rail{position:fixed;left:0;right:0;bottom:0;top:auto;height:64px;flex-direction:row;padding:8px 16px}.rail nav{display:none}.rail .call,.rail .logo{width:46px;height:46px}
+      main{padding-bottom:64px}.hero-grid,.section-title,.surface-board,.zone-contact,.footer-grid{grid-template-columns:1fr}.diagnostic,.method,.proof-grid{grid-template-columns:1fr 1fr}.service-line{grid-template-columns:1fr}.service-line span{justify-self:start}
+    }
+    @media(max-width:640px){
+      .wrap{width:min(100% - 26px,1160px)}.top-note{display:none}.hero{padding:42px 0 64px}.hero-card{min-height:auto}.profile-card{transform:none}
+      h1{font-size:3rem}.diagnostic,.method,.proof-grid,.form-grid{grid-template-columns:1fr}.surface-big{min-height:360px}.surface-item{grid-template-columns:1fr}.btn{width:100%}.cta-row{display:grid}.footer-bottom{display:grid}
+    }
+  </style>
+</head>
+<body>
+<div class="layout">
+  <aside class="rail">
+    <a href="#accueil" class="logo">CP</a>
+    <nav>
+      <a href="#surfaces">Surfaces</a>
+      <a href="#diagnostic">Diagnostic</a>
+      <a href="#prestations">Prestations</a>
+      <a href="#contact">Devis</a>
+    </nav>
+    <a class="call" href="tel:+33660362788">☎</a>
+  </aside>
+
+  <main>
+    <div class="top-note">
+      <div class="wrap">
+        <span>Maquette de démonstration non officielle — Altérys IA</span>
+        <span>CP Peinture • Sainte-Marie-aux-Chênes • 06 60 36 27 88</span>
+      </div>
+    </div>
+
+    <section class="hero" id="accueil">
+      <div class="wrap hero-grid">
+        <div>
+          <div class="kicker">Peintre en bâtiment • Supports • Revêtements</div>
+          <h1>Le bon rendu commence par le bon support.</h1>
+          <p class="lead">CP Peinture valorise vos murs, plafonds, sols et façades avec une approche centrée sur la préparation, la propreté du chantier et la finition.</p>
+          <div class="cta-row">
+            <a href="#contact" class="btn btn-primary">Présenter mon projet</a>
+            <a href="tel:+33660362788" class="btn btn-dark">Appeler maintenant</a>
+            <a href="#avis" class="btn btn-line">Voir les avis</a>
+          </div>
+        </div>
+
+        <aside class="profile-card">
+          <div>
+            <div class="kicker" style="color:#ffd2bc">Fiche artisan</div>
+            <h2>CP Peinture<br>Mr Peltier Clément</h2>
+            <div class="score">
+              <div><b>5/5</b><span>Note Google visible</span></div>
+              <div><b>4</b><span>Avis clients visibles</span></div>
+            </div>
+          </div>
+          <div class="contact-mini">
+            <p>5 Rue des Jonquilles<br>57255 Sainte-Marie-aux-Chênes</p>
+            <a href="tel:+33660362788">06 60 36 27 88</a>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="surfaces">
+      <div class="wrap">
+        <div class="section-title">
+          <div><div class="kicker">Approche métier</div><h2>Une page pensée autour des surfaces, pas autour d’un modèle générique.</h2></div>
+          <p>Pour CP Peinture, la démonstration doit montrer une expertise simple : observer, préparer, traiter puis finir chaque support.</p>
+        </div>
+
+        <div class="surface-board">
+          <div class="surface-big">
+            <h3>Murs, plafonds, sols, façades : chaque zone demande un traitement différent.</h3>
+          </div>
+          <div class="surface-list">
+            <article class="surface-item"><b>M</b><div><h3>Murs</h3><p>Réparation, préparation, peinture et revêtements muraux.</p></div></article>
+            <article class="surface-item"><b>P</b><div><h3>Plafonds</h3><p>Rénovation, rattrapage, caissons et remise en peinture.</p></div></article>
+            <article class="surface-item"><b>S</b><div><h3>Sols</h3><p>Pose de revêtements de sol dans le cadre d’un projet intérieur.</p></div></article>
+            <article class="surface-item"><b>F</b><div><h3>Façades</h3><p>Peinture extérieure et préparation des supports exposés.</p></div></article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="paper" id="diagnostic">
+      <div class="wrap">
+        <div class="section-title">
+          <div><div class="kicker">Diagnostic support</div><h2>Avant la couleur, il y a l’état du support.</h2></div>
+          <p>Cette section différencie nettement la démo CP Peinture : elle met en avant une logique d’artisan peintre, et non une logique d’entreprise générale comme IMS.</p>
+        </div>
+        <div class="diagnostic">
+          <article class="diag"><span class="num">01</span><h3>Support neuf</h3><p>Préparation adaptée avant peinture ou revêtement.</p></article>
+          <article class="diag"><span class="num">02</span><h3>Support ancien</h3><p>Remise en état, reprise des défauts et finitions.</p></article>
+          <article class="diag"><span class="num">03</span><h3>Support abîmé</h3><p>Réparation, rattrapage et remise en peinture.</p></article>
+          <article class="diag"><span class="num">04</span><h3>Local professionnel</h3><p>Accompagnement pour boutique, commerce ou espace client.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="prestations">
+      <div class="wrap">
+        <div class="section-title">
+          <div><div class="kicker">Prestations</div><h2>Des services présentés comme un nuancier de solutions.</h2></div>
+          <p>La présentation se fait en lignes horizontales, volontairement différente des cartes classiques IMS.</p>
+        </div>
+        <div class="service-strip">
+          <article class="service-line"><b>Peinture intérieure</b><p>Murs, plafonds, pièces de vie, rénovation de boutique et remise en état.</p><span>Intérieur</span></article>
+          <article class="service-line"><b>Peinture extérieure</b><p>Application sur supports extérieurs avec préparation préalable.</p><span>Extérieur</span></article>
+          <article class="service-line"><b>Préparation supports</b><p>Réparation, reprise des défauts et amélioration avant finition.</p><span>Base chantier</span></article>
+          <article class="service-line"><b>Revêtements muraux</b><p>Pose de papiers peints, solutions décoratives et revêtements adaptés.</p><span>Décoration</span></article>
+          <article class="service-line"><b>Revêtements de sol</b><p>Pose de sols dans le cadre d’une rénovation ou amélioration intérieure.</p><span>Sols</span></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="dark">
+      <div class="wrap">
+        <div class="section-title">
+          <div><div class="kicker" style="color:#ffd2bc">Méthode courte</div><h2>Un parcours simple, adapté à un artisan peintre.</h2></div>
+          <p>Moins institutionnel qu’IMS, plus direct, plus terrain : échange, support, solution, finition.</p>
+        </div>
+        <div class="method">
+          <article><b>01</b><h3>Échange</h3><p>Besoin, pièce concernée, rendu attendu.</p></article>
+          <article><b>02</b><h3>Support</h3><p>État du mur, plafond, sol ou façade.</p></article>
+          <article><b>03</b><h3>Solution</h3><p>Peinture, réparation, revêtement ou finition.</p></article>
+          <article><b>04</b><h3>Finition</h3><p>Rendu propre, efficace et cohérent.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="paper" id="avis">
+      <div class="wrap">
+        <div class="section-title">
+          <div><div class="kicker">Preuve locale</div><h2>Les avis clients deviennent un levier de confiance immédiat.</h2></div>
+          <p>La maquette reprend uniquement les avis visibles communiqués : pas de note inventée, pas de témoignage fictif.</p>
+        </div>
+        <div class="proof-grid">
+          <article class="review"><p>Clément est très à l’écoute de ses clients, il a su m’accompagner et me conseiller pour mon projet de rénovation de boutique. Très pro et efficace.</p><strong>Marina G.</strong></article>
+          <article class="review"><p>Très bon travail, rapide et efficace, je recommande !!</p><strong>Lucas F.</strong></article>
+          <article class="review"><p>L’entreprise CP Peinture est intervenue à notre domicile pour une rénovation d’un plafond de 10 m² avec création de caissons et remise en peinture.</p><strong>Michael J.</strong></article>
+        </div>
+        <p class="note">Avis issus de la fiche Google actuelle. Note visible : 5/5 sur 4 avis.</p>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="wrap zone-contact">
+        <div>
+          <div class="kicker">Zone d’intervention</div>
+          <h2>Basé à Sainte-Marie-aux-Chênes.</h2>
+          <p style="color:var(--muted);margin-top:16px">CP Peinture intervient sur son secteur local, avec une présence cohérente en Moselle et communes proches selon les projets.</p>
+          <div class="cities">
+            <span>Sainte-Marie-aux-Chênes</span><span>Jœuf</span><span>Homécourt</span><span>Briey</span><span>Rombas</span><span>Amnéville</span><span>Metz</span><span>Moselle</span>
+          </div>
+        </div>
+
+        <div class="form-card">
+          <div class="kicker" style="color:#ffd2bc">Demande de devis</div>
+          <h2>Présentez votre projet.</h2>
+          <p>Type de support, état actuel, pièce concernée, délai souhaité : la demande est qualifiée avant l’échange.</p>
+          <form action="mailto:" method="post" enctype="text/plain">
+            <div class="form-grid">
+              <div class="field"><label>Nom</label><input name="Nom" placeholder="Votre nom"></div>
+              <div class="field"><label>Téléphone</label><input name="Téléphone" placeholder="Votre téléphone"></div>
+              <div class="field"><label>Ville</label><input name="Ville" placeholder="Ville du chantier"></div>
+              <div class="field"><label>Travaux</label><select name="Travaux"><option>Peinture intérieure</option><option>Peinture extérieure</option><option>Préparation support</option><option>Revêtement mural</option><option>Revêtement de sol</option></select></div>
+              <div class="field full"><label>Message</label><textarea name="Message" placeholder="Décrivez l’état actuel, les pièces concernées et le rendu souhaité."></textarea></div>
+              <div class="field full"><button class="btn btn-primary" type="submit">Envoyer ma demande</button></div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="wrap">
+        <div class="footer-grid">
+          <div><strong>CP Peinture — Mr Peltier Clément</strong><p>Peinture intérieure • extérieure • préparation des supports • revêtements muraux • revêtements de sol</p></div>
+          <div><p>5 Rue des Jonquilles, 57255 Sainte-Marie-aux-Chênes</p><p><a href="tel:+33660362788">06 60 36 27 88</a></p></div>
+          <div><p>Maquette non officielle réalisée à titre de proposition commerciale.</p></div>
+        </div>
+        <div class="footer-bottom">
+          <span>© 2026 CP Peinture. Maquette non officielle.</span>
+          <span class="alterys">Démonstration digitale personnalisée — Altérys IA</span>
+        </div>
+      </div>
+    </footer>
+  </main>
+</div>
+</body>
+</html>
